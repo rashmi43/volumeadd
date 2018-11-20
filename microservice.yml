@@ -1,13 +1,46 @@
 omg: 1
+lifecycle:
+  startup:
+    command: ["python", "/app/app.py"]
 actions:
-  entrypoint:
-    help: Execute a kubectl command.
+  help: Create a volume
+  create:
+    http:
+      path: /createvol
+      method: post
+      port: 8000
     arguments:
-      path:
+      vol:
         type: string
         required: true
-        help: Path to the file to execute.
-
-volumes:
-  foo:
-    target: /mnt/data
+        in: requestBody
+      target:
+        type: string
+        required: true
+        in: requestBody
+      persist:
+        type: boolean
+        required: true
+        in: requestBody
+    output:
+      type: object
+      contentType: application/json
+  remove:
+    http:
+      path: /removevol
+      port: 8000
+      method: post
+    arguments:
+      vol:
+        type: string
+        required: true
+        in: requestBody
+    output:
+      type: object
+      contentType: application/json
+environment:
+  KUBE_URI:
+    help: |
+      The MongoDB URI to be used in the connection.
+      Defaults to mongodb://localhost:27017/.
+    type: string
