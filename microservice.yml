@@ -1,0 +1,13 @@
+omg: 1
+actions:
+  entrypoint:
+    help: Execute a kubectl command.
+    arguments:
+      path:
+        type: string
+        required: true
+        help: Path to the file to execute.
+
+volumes:
+  foo:
+    target: /mnt/data
