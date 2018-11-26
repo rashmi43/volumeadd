@@ -3,44 +3,26 @@ lifecycle:
   startup:
     command: ["python", "/app/app.py"]
 actions:
-  help: Create a volume
-  create:
+  write:
     http:
-      path: /createvol
+      port: 8080
       method: post
-      port: 8000
+      path: /write
     arguments:
-      vol:
+      text:
         type: string
-        required: true
-        in: requestBody
-      target:
-        type: string
-        required: true
-        in: requestBody
-      persist:
-        type: boolean
-        required: true
         in: requestBody
     output:
-      type: object
-      contentType: application/json
-  remove:
+      type: string
+  read:
     http:
-      path: /removevol
-      port: 8000
-      method: post
+      port: 8080
+      method: get
+      path: /read/{{text}}
     arguments:
-      vol:
+      text:
         type: string
+        in: path
         required: true
-        in: requestBody
     output:
-      type: object
-      contentType: application/json
-environment:
-  KUBE_URI:
-    help: |
-      The MongoDB URI to be used in the connection.
-      Defaults to mongodb://localhost:27017/.
-    type: string
+      type: string
